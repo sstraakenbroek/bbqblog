@@ -1,6 +1,6 @@
-#BBQ Blog
+# BBQ Blog
 
-##Installation
+## Installation
 ```
 git clone  
 ```
@@ -9,25 +9,25 @@ goto laradock directory
 docker-compose build php-fpm nginx mariadb phpmyadmin mailhog workspace
 ```
 
-##Run server
+## Run server
 Go to laradock directory
 ```
 docker-compose up -d nginx mariadb phpmyadmin mailhog workspace
 ```
 
-##Website
+## Website
 http://localhost/
 
-##PhpMyAdmin
+## PhpMyAdmin
 http://localhost:8080  
 Server: mariadb  
 Username: root  
 Password: root  
 
-##Mailserver:
+## Mailserver:
 http://localhost:8025
 
-##Workspace
+## Workspace
 Go to laradock directory
 ```
 docker exec -it laradock_workspace_1 /bin/bash
