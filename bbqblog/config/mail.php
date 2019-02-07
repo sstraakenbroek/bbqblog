@@ -99,7 +99,7 @@ return [
     |
     */
 
-    'sendmail' => '/usr/sbin/sendmail -bs',
+    'sendmail' => '/usr/bin/mhsendmail -t --smtp-addr mailhog:1025',
 
     /*
     |--------------------------------------------------------------------------

@@ -2,12 +2,18 @@
 
 ## Installation
 ```
-git clone  
+git clone https://github.com/sstraakenbroek/bbqblog.git
 ```
-goto laradock directory   
+Go to /laradock directory   
 ```
 docker-compose build php-fpm nginx mariadb phpmyadmin mailhog workspace
 ```
+Go to /bbqblog directory
+```
+composer install
+npm install
+npm run dev
+```   
 
 ## Run server
 Go to laradock directory
