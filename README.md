@@ -13,6 +13,8 @@ Go to /bbqblog directory
 composer install
 npm install
 npm run dev
+php artisan migrate
+php artisan seed
 ```   
 
 ## Run server

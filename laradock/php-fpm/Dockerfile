@@ -28,6 +28,13 @@ RUN apt-get update -yqq && \
     apt-get install -y apt-utils && \
     pecl channel-update pecl.php.net
 
+# install prefered locales to use
+RUN apt-get install -y locales && \
+    sed -i 's/^# *\(en_US\)/\1/' /etc/locale.gen && \
+    sed -i 's/^# *\(de_DE\)/\1/' /etc/locale.gen && \
+    sed -i 's/^# *\(nl_NL\)/\1/' /etc/locale.gen && \
+    locale-gen
+
 #
 #--------------------------------------------------------------------------
 # Mandatory Software's Installation
