@@ -2,25 +2,37 @@
 
 ## Installation
 ```
-git clone https://github.com/sstraakenbroek/bbqblog.git
+git clone https://github.com/sstraakenbroek/bbqblog.git blog
 ```
-Go to /laradock directory   
+Go to /laradock directory and build the containers
 ```
 docker-compose build php-fpm nginx mariadb phpmyadmin mailhog workspace
 ```
-Go to /bbqblog directory
+
+## Run server
+```
+docker-compose up -d nginx mariadb phpmyadmin mailhog workspace
+```
+
+## Go to workspace
+```
+docker exec -it laradock_workspace_1 /bin/bash
+```
+
+Go to bbqblog directory and install all dependencies and data
 ```
 composer install
 npm install
 npm run dev
-php artisan migrate
+php artisan storage:link
+php artisan migrate:fresh
 php artisan db:seed
-```   
+```  
 
-## Run server
-Go to laradock directory
+For an example Post test
 ```
-docker-compose up -d nginx mariadb phpmyadmin mailhog workspace
+cd bbqblog
+vendor/bin/phpunit tests/Feature/PostsTest.php
 ```
 
 ## Website
@@ -36,14 +48,3 @@ Password: root
 
 ## Mailserver:
 http://localhost:8025
-
-## Workspace
-Go to laradock directory
-```
-docker exec -it laradock_workspace_1 /bin/bash
-```
-Run posts test for example
-```
-cd bbqblog
-vendor/bin/phpunit tests/Feature/PostsTest.php
-```
