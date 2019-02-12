@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('layouts.base')
 
 @section('masthead.subtitle', 'bar·be·cue (de; m; meervoud: barbecues)')
 

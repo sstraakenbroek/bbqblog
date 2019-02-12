@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('layouts.base')
 
 @section('page.title', config('app.name').' - '.$pageTitle)
 @section('masthead.title', $pageTitle)
@@ -9,7 +9,7 @@
             <div class="col-lg-8 col-md-10 mx-auto">
                 <p>Voeg hier een nieuw BBQ Blog artikel toe.</p>
                 @include('posts.includes.error')
-                <form name="sentPost" id="postForm" method="POST" action="{{ route('posts.create') }}" novalidate>
+                <form name="sentPost" id="postForm" method="POST" action="{{ route('posts.index') }}" novalidate>
                     @csrf()
                     @include('posts.forms.create-edit')
                     <div class="form-group mt-3">

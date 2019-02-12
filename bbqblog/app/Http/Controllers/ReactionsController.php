@@ -17,18 +17,27 @@ class ReactionsController extends Controller
     }
 
     /**
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     */
+    private function validateReaction(Request $request)
+    {
+        return $request->validate([
+            'name' => 'required',
+            'message' => 'required',
+        ]); // @TODO - custom error messages
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Post $post
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Post $post)
     {
-        $attributes = $request->validate([
-            'name' => 'required',
-            'message' => 'required',
-        ]); // @TODO - custom error messages
+        $attributes = $this->validateReaction($request);
         $post->addReaction($attributes);
 
         $this->flash('Reactie toegevoegd.');

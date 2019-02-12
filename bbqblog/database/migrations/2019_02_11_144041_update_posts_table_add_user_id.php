@@ -14,7 +14,9 @@ class UpdatePostsTableAddUserId extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->unsignedInteger('user_id')->index()->after('id');
+            $table->unsignedInteger('user_id')->after('id');
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

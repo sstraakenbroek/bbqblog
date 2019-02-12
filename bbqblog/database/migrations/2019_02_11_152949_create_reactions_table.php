@@ -15,10 +15,12 @@ class CreateReactionsTable extends Migration
     {
         Schema::create('reactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('post_id')->index();
+            $table->unsignedInteger('post_id');
             $table->string('name');
             $table->text('message');
             $table->timestamps();
+
+            $table->foreign('post_id')->references('id')->on('posts');
         });
     }
 

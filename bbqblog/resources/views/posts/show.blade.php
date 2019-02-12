@@ -1,6 +1,9 @@
-@extends('layout.base')
+@extends('layouts.base')
 
 @section('page.title', config('app.name').' - '.$post->title)
+@if(!empty($post->background) && file_exists(public_path($post->background)))
+    @section('masthead.background', asset($post->background))
+@endif
 @section('masthead.title', $post->title)
 @if(!empty($post->subtitle))
     @section('masthead.subtitle', $post->subtitle)
@@ -14,9 +17,11 @@
                 <div class="col-lg-8 col-md-10 mx-auto">
                     {!! nl2br(e($post->description)) !!}
                 </div>
-                <div class="col-lg-8 col-md-10 mx-auto mt-3">
-                    <a href="{{ route('posts.edit', $post->slug) }}" class="btn btn-primary">Wijzigen</a>
-                </div>
+                @can('update', $post)
+                    <div class="col-lg-8 col-md-10 mx-auto mt-3">
+                        <a href="{{ route('posts.edit', $post->slug) }}" class="btn btn-primary">Wijzigen</a>
+                    </div>
+                @endcan
             </div>
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto">

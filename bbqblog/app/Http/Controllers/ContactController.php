@@ -17,6 +17,30 @@ class ContactController extends Controller
     }
 
     /**
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     */
+    private function validateContact(Request $request)
+    {
+       return $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'message' => 'required',
+        ]); // @TODO - custom error messages
+    }
+
+    /**
+     * @param \App\Contact $contact
+     * @return mixed
+     */
+    private function mailNotify(Contact $contact)
+    {
+        return \Mail::to('stefan@straakenbroek.nl')->send(
+            new ContactSend($contact)
+        );
+    }
+
+    /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
@@ -32,17 +56,8 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'message' => 'required',
-        ]); // @TODO - custom error messages
-        $contact = Contact::create($attributes);
-
-        \Mail::to('stefan@straakenbroek.nl')->send(
-            new ContactSend($contact)
-        );
-
+        $contact = Contact::create($this->validateContact($request));
+        $this->mailNotify($contact);
         $this->flash('Bericht verzonden.');
 
         return redirect(route('home'));

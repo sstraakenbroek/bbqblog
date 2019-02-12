@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('layouts.base')
 
 @section('page.title', config('app.name').' - '.$post->title)
 @section('masthead.title', $post->title)

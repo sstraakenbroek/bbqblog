@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['create', 'store', 'edit', 'update', 'destroy']);
+        //$this->middleware('auth')->except(['index','show']);
+    }
+
     /**
      * @param string $message
      */
@@ -16,12 +23,15 @@ class PostsController extends Controller
     }
 
     /**
-     * @param $title
-     * @return string
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
      */
-    private function generateSlug($title)
+    private function validatePost(Request $request)
     {
-        return str_slug($title, '-'); // @TODO - check if slug is unique and slug is not a route value
+        return $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+        ]); // @TODO - custom error messages
     }
 
     /**
@@ -53,13 +63,8 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-        ]); // @TODO - custom error messages
-        $create = array_merge($attributes, $request->only(['subtitle']));
-        $create['user_id'] = 1; // @TODO - get from auth login
-        $create['slug'] = $this->generateSlug($create['title']);
+        $create = array_merge($this->validatePost($request), $request->only(['subtitle']));
+        $create['user_id'] = Auth::id();
         $post = Post::create($create);
 
         $this->flash(sprintf('Artikel "%s" toegevoegd', $post->title));
@@ -83,22 +88,29 @@ class PostsController extends Controller
      *
      * @param \App\Post
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Post $post)
     {
+        $this->authorize('update', $post);
+
         return view('posts.edit', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @param \App\Post
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Post $post)
     {
-        $post->update($request->only('title', 'subtitle', 'description'));
+        $this->authorize('update', $post);
+
+        $update = array_merge($this->validatePost($request), $request->only(['subtitle']));
+        $post->update($update);
 
         $this->flash(sprintf('Artikel "%s" gewijzigd', $post->title));
 
@@ -114,6 +126,9 @@ class PostsController extends Controller
      */
     public function destroy(Post $post)
     {
+        $this->authorize('delete', $post);
+
+        $post->reactions()->delete();
         $post->delete();
 
         $this->flash(sprintf('Artikel "%s" verwijderd', $post->title));

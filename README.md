@@ -14,7 +14,7 @@ composer install
 npm install
 npm run dev
 php artisan migrate
-php artisan seed
+php artisan db:seed
 ```   
 
 ## Run server
@@ -24,7 +24,9 @@ docker-compose up -d nginx mariadb phpmyadmin mailhog workspace
 ```
 
 ## Website
-http://localhost/
+http://localhost/  
+Username: stefan@straakenbroek.nl  
+Password: secret  
 
 ## PhpMyAdmin
 http://localhost:8080  
@@ -39,4 +41,9 @@ http://localhost:8025
 Go to laradock directory
 ```
 docker exec -it laradock_workspace_1 /bin/bash
+```
+Run posts test for example
+```
+cd bbqblog
+vendor/bin/phpunit tests/Feature/PostsTest.php
 ```

@@ -26,6 +26,17 @@ class Post extends Model
     }
 
     /**
+     * @param string $value
+     */
+    public function setTitleAttribute(string $value)
+    {
+        // @TODO - https://github.com/cviebrock/eloquent-sluggable
+        // Prevent routes as slugs and prevent existing slugs
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = str_slug($value, '-');
+    }
+
+    /**
      * Connect post to user
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

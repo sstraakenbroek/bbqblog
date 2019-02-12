@@ -26,3 +26,5 @@ Route::get('/about', 'PagesController@index')->name('about');
 
 Route::get('/contact', 'ContactController@index')->name('contact');
 Route::post('/contact', 'ContactController@store')->name('contact');
+
+Auth::routes(['register' => false]);
