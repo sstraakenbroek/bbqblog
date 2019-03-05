@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Contact;
+use App\Models\Contact;
 use App\Mail\ContactSend;
 use Illuminate\Http\Request;
 
@@ -11,7 +11,7 @@ class ContactController extends Controller
     /**
      * @param string $message
      */
-    private function flash(string $message)
+    private function flash(string $message): void
     {
         session()->flash('message', $message);
     }
@@ -30,7 +30,7 @@ class ContactController extends Controller
     }
 
     /**
-     * @param \App\Contact $contact
+     * @param \App\Models\Contact $contact
      * @return mixed
      */
     private function mailNotify(Contact $contact)
@@ -41,9 +41,9 @@ class ContactController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         return view('contact', ['pageTitle' => 'Contact']);
     }
@@ -52,9 +52,9 @@ class ContactController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $contact = Contact::create($this->validateContact($request));
         $this->mailNotify($contact);

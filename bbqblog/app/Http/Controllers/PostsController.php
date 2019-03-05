@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +17,7 @@ class PostsController extends Controller
     /**
      * @param string $message
      */
-    private function flash(string $message)
+    private function flash(string $message): void
     {
         session()->flash('message', $message);
     }
@@ -37,9 +37,9 @@ class PostsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         $posts = Post::orderBy('id', 'DESC')->get();
         return view('welcome', ['posts' => $posts]);
@@ -48,9 +48,9 @@ class PostsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         return view('posts.create', ['pageTitle' => 'Artikel toevoegen']);
     }
@@ -59,9 +59,9 @@ class PostsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $create = array_merge($this->validatePost($request), $request->only(['subtitle']));
         $create['user_id'] = Auth::id();
@@ -75,10 +75,10 @@ class PostsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Post
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Post
+     * @return \Illuminate\View\View
      */
-    public function show(Post $post)
+    public function show(Post $post): \Illuminate\View\View
     {
         return view('posts.show', compact('post'));
     }
@@ -86,11 +86,11 @@ class PostsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Post
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Post
+     * @return \Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit(Post $post)
+    public function edit(Post $post): \Illuminate\View\View
     {
         $this->authorize('update', $post);
 
@@ -101,11 +101,11 @@ class PostsController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Post
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Post
+     * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Post $post): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('update', $post);
 
@@ -120,11 +120,11 @@ class PostsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Post
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Post
+     * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function destroy(Post $post)
+    public function destroy(Post $post): \Illuminate\Http\RedirectResponse
     {
         $this->authorize('delete', $post);
 

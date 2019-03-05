@@ -28,7 +28,7 @@ class ContactSend extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): self
     {
         return $this->subject(config('app.name').' - Contact bericht')
             ->replyTo($this->contact->email, $this->contact->name)

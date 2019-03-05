@@ -18,7 +18,7 @@ class PostsTest extends TestCase
         //$this->withoutExceptionHandling();
 
         // Given; User is logged in
-        $this->actingAs(factory('App\User')->create());
+        $this->actingAs(factory('App\Models\User')->create());
 
         // When; User hit the endpoint /posts/create to create a new post with data
         $title = $this->faker->sentence();

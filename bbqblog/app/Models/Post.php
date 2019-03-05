@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +20,7 @@ class Post extends Model
      *
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
@@ -28,7 +28,7 @@ class Post extends Model
     /**
      * @param string $value
      */
-    public function setTitleAttribute(string $value)
+    public function setTitleAttribute(string $value): void
     {
         // @TODO - https://github.com/cviebrock/eloquent-sluggable
         // Prevent routes as slugs and prevent existing slugs
@@ -41,7 +41,7 @@ class Post extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -49,7 +49,7 @@ class Post extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function reactions()
+    public function reactions(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Reaction::class);
     }
@@ -57,7 +57,7 @@ class Post extends Model
     /**
      * @return string
      */
-    public function getMeta()
+    public function getMeta(): string
     {
         return sprintf('Geplaatst door %s op %s', $this->user->name, $this->created_at->formatLocalized('%A %e %B %Y %H:%M'));
     }
@@ -65,7 +65,7 @@ class Post extends Model
     /**
      * @param array $attributes
      */
-    public function addReaction(array $attributes)
+    public function addReaction(array $attributes): void
     {
         $this->reactions()->create($attributes);
     }

@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 class PagesController extends Controller
 {
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         return view('about', ['pageTitle'=>'Over']);
     }
