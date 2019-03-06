@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ContactCreated;
 use App\Models\Contact;
 use App\Mail\ContactSend;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -35,7 +37,7 @@ class ContactController extends Controller
      */
     private function mailNotify(Contact $contact)
     {
-        return \Mail::to('stefan@straakenbroek.nl')->send(
+        return Mail::to(env('MAIL_FROM_ADDRESS'))->send(
             new ContactSend($contact)
         );
     }
@@ -57,7 +59,8 @@ class ContactController extends Controller
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $contact = Contact::create($this->validateContact($request));
-        $this->mailNotify($contact);
+        //$this->mailNotify($contact);
+        event(new ContactCreated($contact));
         $this->flash('Bericht verzonden.');
 
         return redirect(route('home'));

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\ContactCreated;
+use App\Listeners\SendContactCreatedNotifcation;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -13,8 +15,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Event' => [
-            'App\Listeners\EventListener',
+        ContactCreated::class => [
+            SendContactCreatedNotifcation::class
         ],
     ];
 
@@ -23,7 +25,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
 
